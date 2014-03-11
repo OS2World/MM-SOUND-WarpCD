@@ -1,0 +1,7 @@
+rcinclude cdplayerres.dlg
+
+MENU    IDM_POPUP
+BEGIN
+    MENUITEM    "E~xit",    IDM_ITEMEXIT
+END
+

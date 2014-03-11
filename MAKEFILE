@@ -1,0 +1,94 @@
+# Makefile for Audio-CD copy
+
+DISTNAME	=	warpcd-v0_2_0
+WARPINNAME	=	$(DISTNAME).wpi
+
+CC           = gcc
+LIB_DIR      = $d:/emx/lib 
+#CPPFLAGS     = -Ge- /Gm+ -G4 -Gl  /O+ -Oc+ -Ol
+CPPFLAGS     = -Zomf -Zcrtdll -Zmt -s
+INC		= ../include
+DEFS         = 
+PROGS        =  
+ODIR		= .
+CPPDIR	= .
+OBJECTS	=	cd.obj cdcontrol.obj paintcontrols.obj controls.obj init.obj bitmap.obj \
+			controlprocs.obj guiproc.obj aboutproc.obj optionsproc.obj
+
+all:	warpcd.exe
+
+warpcd.exe:	cdplayer.c $(OBJECTS) common.h controls.h cdplayerres.res
+	gcc $(CPPFLAGS) -I$(INC) -o warpcd.exe cdplayer.c $(OBJECTS) cdplayer.def
+	rc cdplayerres.res warpcd.exe
+
+cdplayerres.res:	cdplayerres.rc
+	rc -r cdplayerres.rc cdplayerres.res
+
+cd.obj:	cd.c cd.h common.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+cdcontrol.obj:	cdcontrol.c cd.h cdplayerres.h  common.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+paintcontrols.obj:	paintcontrols.c cd.h cdplayerres.h  common.h controls.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+controls.obj:	controls.c cdplayerres.h  common.h controls.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+init.obj:	init.c cdplayerres.h  common.h controls.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+bitmap.obj:	bitmap.c controls.h common.h cdplayerres.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+controlprocs.obj:	controlProcs.c controls.h common.h cdplayerres.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+guiproc.obj:	guiProc.c controls.h common.h cdplayerres.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+aboutproc.obj:	aboutProc.c common.h cdplayerres.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+optionsproc.obj:	optionsProc.c common.h cdplayerres.h
+	gcc -c -o$@ -Zomf -I$(INC) $< 		
+
+clean:
+	-rm *.exe
+	-rm *.o
+	-rm *.obj
+
+cleaner:
+	-rm *.*~
+	-rm *.flc
+	-rm *.res
+
+distribution:
+	-rm ../*.exe
+	-rm ../*.zip
+	-rm ../*.wpi
+	-rm ../*.ico
+	make
+	-cp *.exe ../
+	-cp *.ico ../
+	make clean
+	make cleaner
+	cd .. && wic $(WARPINNAME) -a 1 -r  Default\\*
+	cd .. && wic $(WARPINNAME) -a 1 -r  Aqua\\*
+	cd .. && wic $(WARPINNAME) -a 1 -r  "QuickTime X\\*"
+	cd .. && wic $(WARPINNAME) -a 1  *.exe
+	cd .. && wic $(WARPINNAME) -a 1  *.htm
+	cd .. && wic $(WARPINNAME) -a 1  *.ico
+	cd .. && wic $(WARPINNAME) -a 1  COPYING
+	cd .. && wic $(WARPINNAME) -a 2 -r  source\\*
+	cd .. && wic $(WARPINNAME) -a 2  FILE_ID.DIZ 
+	cd .. && wic $(WARPINNAME) -a 2  hobbes.txt 
+	cd .. && wic $(WARPINNAME) -s ./source/warpcd.wis
+	cd .. && zip -9r $(DISTNAME).zip $(WARPINNAME)
+	cd .. && zip -9r $(DISTNAME).zip FILE_ID.DIZ
+
+
+
+	
+

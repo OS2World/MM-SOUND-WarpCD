@@ -1,0 +1,138 @@
+#ifndef OS2_INCLUDED
+   #include <os2.h>
+#endif
+#include "cdplayerres.h"
+
+POINTER IDPT_HAND  hand.ptr
+
+DEFAULTICON  warpcd.ico
+
+MENU    IDM_POPUP
+BEGIN
+    MENUITEM    "Back",    IDPB_PREVIOUS
+    MENUITEM    "Play",    IDPB_PLAY
+    MENUITEM    "Pause",    IDPB_PAUSE
+    MENUITEM    "Stop",    IDPB_STOP
+    MENUITEM    "Next",    IDPB_NEXT
+    MENUITEM    "Select track...",    IDPB_PL
+    MENUITEM    "",    IDM_ITEMSEPARATOR, MIS_SEPARATOR
+    MENUITEM    "Skins",    IDM_ITEMSKINMENU, MIS_SUBMENU
+     BEGIN
+       MENUITEM    "Default",    IDM_ITEMDEFAULTSKIN
+       MENUITEM    "",    IDM_ITEMSEPARATOR, MIS_SEPARATOR
+     END
+    MENUITEM    "",    IDM_ITEMSEPARATOR, MIS_SEPARATOR
+    MENUITEM    "About...",    IDM_ITEMABOUT
+    MENUITEM    "Options...",    IDM_ITEMOPTIONS
+    MENUITEM    "",    IDM_ITEMSEPARATOR, MIS_SEPARATOR
+    MENUITEM    "E~xit",    IDM_ITEMEXIT
+
+END
+
+
+
+DLGTEMPLATE IDDLG_SELECTTRACK LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Select track", IDDLG_SELECTTRACK, 76, 105, 148, 71, WS_VISIBLE, 
+            FCF_TITLEBAR
+    BEGIN
+        PUSHBUTTON      "Cancel", IDPB_CANCEL, 10, 5, 40, 14
+    END
+END
+
+
+DLGTEMPLATE IDDLG_OPTIONS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Options", IDDLG_OPTIONS, 109, 39, 200, 159, WS_VISIBLE, 
+            FCF_TITLEBAR
+    BEGIN
+        GROUPBOX        "CD drive", 307, 5, 112, 188, 40
+        LTEXT           "Choose drive:", 303, 13, 129, 68, 8, NOT WS_GROUP
+        CONTROL         "", IDLB_DRIVE, 89, 103, 32, 35, WC_COMBOBOX, CBS_DROPDOWN | 
+                        WS_TABSTOP | WS_VISIBLE
+        GROUPBOX        "Skin directory", 308, 5, 28, 188, 78
+        ENTRYFIELD      "", IDEF_SKINDIRECTORY, 11, 81, 121, 8, ES_MARGIN
+        PUSHBUTTON      "Browse", IDPB_BROWSE, 143, 78, 40, 14
+        PUSHBUTTON      "OK", IDPB_OK, 5, 6, 40, 14, WS_GROUP
+        PUSHBUTTON      "Cancel", IDPB_CANCEL, 53, 6, 40, 14
+        LTEXT           "Get more skins here:", 305, 10, 63, 98, 8
+        CTEXT           "http://www.winamp.com", IDST_WINAMP, 39, 48, 118, 8
+                        PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+        CTEXT           "http://www.customize.org", IDST_CUSTOMIZE, 39, 37, 
+                        118, 8
+                        PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    END
+END
+
+DLGTEMPLATE IDDLG_MAINDLG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "CDPlayer", IDDLG_MAINDLG, 67, 115, 184, 75, NOT FS_DLGBORDER | 
+            WS_VISIBLE | NOT WS_SAVEBITS
+    BEGIN
+        PUSHBUTTON      "|<", IDPB_PREVIOUS, 15, 4, 21, 11, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      ">|", IDPB_NEXT, 99, 4, 21, 11, BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Play", IDPB_PLAY, 36, 4, 21, 11, BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Stop", IDPB_STOP, 78, 4, 21, 11, BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Pause", IDPB_PAUSE, 57, 4, 21, 11, 
+                        BS_NOPOINTERFOCUS
+        LTEXT           "00", IDST_MINS, 149, 67, 20, 8
+        LTEXT           "Track", IDST_TRACK, 124, 64, 29, 8
+        PUSHBUTTON      "Eject", IDPB_EJECT, 121, 4, 21, 11, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Titlebar", IDPB_TITLEBAR, 105, 15, 71, 8, 
+                        BS_NOPOINTERFOCUS
+        LTEXT           "44", IDST_KHZ, 33, 66, 20, 8
+        LTEXT           "00", IDST_SECS, 168, 67, 16, 8
+        PUSHBUTTON      "Close", IDPB_CLOSE, 81, 17, 21, 11, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Min", IDPB_MIN, 36, 17, 21, 11, BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Shrink", IDPB_SHRINK, 59, 17, 21, 11, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Title Player", IDPB_TITLEPLAYER, 25, 27, 95, 10, 
+                        BS_NOPOINTERFOCUS
+        LTEXT           "00:00", IDST_TIMETBPLAYER, 92, 66, 27, 8
+        PUSHBUTTON      "Close2", IDPB_CLOSETBPLAYER, 69, 36, 19, 10, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Expand", IDPB_EXPANDTBPLAYER, 50, 36, 19, 10, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Min2", IDPB_MINTBPLAYER, 31, 36, 19, 10, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Stereo", IDPB_STEREO, 160, 46, 19, 10
+        PUSHBUTTON      "Mono", IDPB_MONO, 139, 46, 19, 10
+        PUSHBUTTON      "Shuf", IDPB_SHUFFLE, 142, 24, 19, 10, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "Repeat", IDPB_REPEAT, 160, 24, 19, 10, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "PL", IDPB_PL, 157, 36, 22, 8, BS_NOPOINTERFOCUS
+        PUSHBUTTON      "PosSlider", IDSL_POSITION, 14, 54, 13, 8, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "PosBar", IDPB_POSBAR, 42, 52, 74, 9, 
+                        BS_NOPOINTERFOCUS
+        PUSHBUTTON      "EQ", IDPB_EQ, 131, 36, 25, 8, BS_NOPOINTERFOCUS
+;        LTEXT           "TRACK", IDST_TRACKTBPLAYER, 59, 67, 27, 8
+    END
+END
+
+
+DLGTEMPLATE IDDLG_ABOUT LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "About", IDDLG_ABOUT, 125, 105, 148, 120, WS_VISIBLE, 
+            FCF_TITLEBAR
+    BEGIN
+        PUSHBUTTON      "OK", IDPB_OK, 53, 7, 40, 14
+        CTEXT           "WarpCD", 401, 12, 104, 125, 11
+                        PRESPARAMS PP_FONTNAMESIZE, "12.Helv"
+        CTEXT           "CD player with skin support", 403, 4, 89, 140, 8
+        CTEXT           "(C) Chris Wohlgemuth 2000", 402, 3, 75, 140, 8
+        CTEXT           "Skins by Klaus Staedtler-Przyborski", 410, 3, 45, 140, 20,
+                 DT_WORDBREAK | DT_CENTER
+                PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+
+        CTEXT           "http://www.geocities.com/SiliconValley/Sector/5785"
+                        "/index.html", IDST_HOMEPAGE, 3, 25, 140, 20,
+                 DT_WORDBREAK | DT_CENTER
+                PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    END
+END
+
